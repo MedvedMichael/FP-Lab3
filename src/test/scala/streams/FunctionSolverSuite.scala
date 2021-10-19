@@ -6,19 +6,7 @@ class FunctionSolverSuite extends munit.FunSuite {
   val testFunctionSolver: FunctionSolver.type = FunctionSolver
   val list: List[Double] = testFunctionSolver.toList(-250 to 250, 2)
   test("test list length") {
-    assertEquals(list.length, 501)
-  }
-
-  test("map works correctly") {
-    for (i <- list.indices)
-      assertEquals(list(i), {
-        try {
-          testFunctionSolver.calculateFunction5(i - 250, 2)
-        }
-        catch {
-          case e: Error => 0
-        }
-      })
+    assertEquals(list.length, 500)
   }
 
   test("filter works correctly") {
@@ -36,7 +24,7 @@ class FunctionSolverSuite extends munit.FunSuite {
         acc += calculateFunction5(i, 2)
       }
       catch {
-        case e: Error => acc += 0
+        case e: scala.MatchError => acc += 0
       }
     }
     assertEquals(summary, acc)

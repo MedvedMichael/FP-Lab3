@@ -3,18 +3,17 @@ package streams
 import scala.annotation.tailrec
 
 object FunctionSolver extends App {
-  def calculateFunction5(x: Float, k: Double): Double = {
-    if (x == 10)
-      throw new Error("Invalid input")
-    else if (x > 10)
-      sum(x, 1, 8)
-    else
-      k * scala.math.pow(x, k)
+  def calculateFunction5: PartialFunction[(Double, Double), Double] = {
+    case (x, k) if x != 10 =>
+      if (x > 10)
+        sum(x, 1, 8)
+      else
+        k * scala.math.pow(x, k)
   }
 
-  def sum(x: Float, start: Int, end: Int): Float = {
+  def sum(x: Double, start: Int, end: Int): Double = {
     @tailrec
-    def sumRecurs(x: Float, start: Int, end: Int, result: Float): Float =
+    def sumRecurs(x: Double, start: Int, end: Int, result: Double): Double =
       if (start == end)
         result + x * start
       else
@@ -25,13 +24,7 @@ object FunctionSolver extends App {
 
 
   def toList(range: Seq[Int], k: Double): List[Double] =
-    range.map {
-      num =>
-        try calculateFunction5(num, k)
-        catch {
-          case e: Error => 0
-        }
-    }.toList
+    range.map(x => (x.toDouble, k)).collect(calculateFunction5).toList
 
 
   val list = toList(-250 to 250, 2)
